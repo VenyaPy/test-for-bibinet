@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 import uvicorn
 
+from FastAPI.app.models.search.router import router_search
 
 app = FastAPI()
+
+
+app.include_router(router_search)
 
 
 if __name__ == "__main__":
