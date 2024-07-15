@@ -16,6 +16,10 @@ def model_list(request):
     return JsonResponse(models, safe=False)
 
 
+def to_title_case(s):
+    return s[0].upper() + s[1:].lower() if s else s
+
+
 @csrf_exempt
 def search_part(request):
     if request.method == 'POST':
@@ -32,16 +36,19 @@ def search_part(request):
         query = Q()
 
         if mark_name:
+            mark_name = to_title_case(mark_name)
             query &= Q(mark__name__icontains=mark_name)
 
         if part_name:
+            part_name = to_title_case(part_name)
             query &= Q(name__icontains=part_name)
 
         if mark_list:
             query &= Q(mark__id__in=mark_list)
 
         if 'color' in params:
-            query &= Q(json_data__color=params['color'])
+            color = to_title_case(params['color'])
+            query &= Q(json_data__color=color)
 
         if 'is_new_part' in params:
             query &= Q(json_data__is_new_part=params['is_new_part'])
@@ -55,11 +62,12 @@ def search_part(request):
         parts = Part.objects.filter(query)
 
         total_count = parts.count()
-        total_sum = parts.aggregate(total_sum=Sum('price'))['total_sum'] or 0
 
         start = (page - 1) * 10
         end = start + 10
-        parts = parts[start:end]
+        parts_on_page = parts[start:end]
+
+        total_sum = parts_on_page.aggregate(total_sum=Sum('price'))['total_sum'] or 0
 
         response = [
             {
@@ -76,12 +84,12 @@ def search_part(request):
                 "json_data": part.json_data,
                 "price": part.price
             }
-            for part in parts
+            for part in parts_on_page
         ]
 
         return JsonResponse({
             "response": response,
-            "count": total_count,
+            "count": len(response),
             "summ": total_sum
         }, safe=False)
     else:
