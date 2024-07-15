@@ -6,10 +6,10 @@ from search_parts.models import Part, Mark, Model
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        part_names = ["Engine", "Wheel", "Seat", "Door", "Window"]
+        part_names = ["Двигатель", "Колесо", "Бампер", "Дверь", "Окно"]
         marks = list(Mark.objects.all())
         models = list(Model.objects.all())
-        colors = ["Red", "Blue", "Green", "Black", "White"]
+        colors = ["Красный", "Синий", "Зеленый", "Черный", "Белый"]
 
         parts = []
 
@@ -35,4 +35,4 @@ class Command(BaseCommand):
             ))
 
         Part.objects.bulk_create(parts)
-        self.stdout.write(self.style.SUCCESS("Parts populated successfully."))
+        self.stdout.write(self.style.SUCCESS("Успешно сгенерировано."))

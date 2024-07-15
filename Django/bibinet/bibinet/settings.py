@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'bibinet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bibinet',
+        'NAME': 'bibinet_test',
         'USER': 'postgres',
         'PASSWORD': '0000',
         'HOST': 'localhost',
