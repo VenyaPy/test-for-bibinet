@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 
-from FastAPI.app.models.search.router import router_search
+from models.search.router import router_search
 
 app = FastAPI()
 

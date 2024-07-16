@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+asyncpg
+gunicorn==22.0.0

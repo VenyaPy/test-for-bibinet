@@ -2,8 +2,8 @@ import asyncpg
 from fastapi import APIRouter, Depends
 import json
 
-from FastAPI.app.database.db import get_db
-from FastAPI.app.models.search.schemas import SearchRequest
+from database.db import get_db
+from models.search.schemas import SearchRequest
 
 router_search = APIRouter(
     prefix="/search",

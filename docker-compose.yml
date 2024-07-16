@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: bibinet_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: ./Django
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py populate_initial_data
+      && python manage.py populate_parts &&
+      gunicorn --workers=4 --bind=0.0.0.0:8000 bibinet.wsgi:application"
+    volumes:
+      - ./Django/bibinet:/app
+    depends_on:
+      - db
+
+    environment:
+      - DJANGO_PORT=8000
+    ports:
+      - "8000:8000"
+
+  fastapi:
+    build:
+      context: ./FastAPI
+      dockerfile: Dockerfile
+    volumes:
+      - ./FastAPI/app:/app
+    depends_on:
+      - db
+    environment:
+      - FASTAPI_PORT=8001
+    ports:
+      - "8001:8001"
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+      - fastapi
+
+volumes:
+  postgres_data:
