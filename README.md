@@ -1,12 +1,16 @@
 ### Как использовать?
 
+##
+
 1. **Клонируйте репозиторий**
 
 ```
 git clone https://github.com/VenyaPy/test-for-bibinet.git
 ```
 
+
 2. **Создайте venv окружение**
+
 
 3. **Запустите Docker Compose**
 
@@ -14,11 +18,14 @@ git clone https://github.com/VenyaPy/test-for-bibinet.git
 docker-compose up --build
 ```
 
+
 4. **Готово! Приложения собраны и готовы к работе. База данных предварительно заполнена**
 
 
 Порт 8000: Django проект
 Порт 8001: FastAPI проект
+
+##
 
 
 ## Тесты:
