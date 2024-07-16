@@ -14,12 +14,9 @@ services:
     build:
       context: ./Django
       dockerfile: Dockerfile
-    command: bash -c "python manage.py makemigrations &&
-      python manage.py migrate &&
-      python manage.py populate_initial_data
-      && python manage.py populate_parts &&
-      gunicorn --workers=4 --bind=0.0.0.0:8000 bibinet.wsgi:application"
+    command: sh -c "/code/entrypoint.sh"
     volumes:
+      - ./code:/code
       - ./Django/bibinet:/app
     depends_on:
       - db
